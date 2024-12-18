@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map with Drawing Tool</title>
+    <!-- Mapbox GL CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Mapbox Draw CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif;
+        }
+        #map { 
+            width: 100vw; 
+            height: 90vh; 
+        }
+        #info {
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        #info h1 {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        #info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .mapboxgl-ctrl-group > button {
+            width: 50px;
+            height: 50px;
+        }
+        @media (max-width: 768px) {
+            .mapboxgl-ctrl-group > button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Information Section -->
+    <div id="info">
+        <h1>Interactive Map</h1>
+        <p>Use the polygon tool to draw your area of interest. Click the trash icon to delete shapes.</p>
+    </div>
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Mapbox JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <!-- Mapbox Draw JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+    <script>
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYnJ5Y2Vjb250cmVyYXMiLCJhIjoiY200dDF4aGNpMDZsYjJxcHE4b3JqZzVvNyJ9.Nl2Pyr0coOIUfiCSTVWQPg';
+
+        // Initialize Map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-119.7726, 36.7468], // Fresno, California
+            zoom: 12
+        });
+
+        // Initialize Drawing Tools
+        const Draw = new MapboxDraw({
+            displayControlsDefault: false,
+            controls: {
+                polygon: true,
+                trash: true
+            },
+            styles: [
+                {
+                    'id': 'gl-draw-polygon-fill',
+                    'type': 'fill',
+                    'paint': {
+                        'fill-color': '#4CAF50', // Green fill color
+                        'fill-opacity': 0.4      // Semi-transparent fill
+                    }
+                },
+                {
+                    'id': 'gl-draw-polygon-stroke',
+                    'type': 'line',
+                    'paint': {
+                        'line-color': '#FF0000', // Solid red line color
+                        'line-width': 4          // Thicker border
+                    }
+                },
+                {
+                    'id': 'gl-draw-polygon-midpoint',
+                    'type': 'circle',
+                    'paint': {
+                        'circle-radius': 6,
+                        'circle-color': '#000000' // Black midpoint color
+                    }
+                }
+            ]
+        });
+
+        // Add Drawing Controls to Map
+        map.addControl(Draw);
+
+        // Mobile-Friendly Zoom and Rotate
+        map.scrollZoom.disable();
+        map.addControl(new mapboxgl.NavigationControl({ showCompass: true, visualizePitch: true }));
+
+        // Event Listeners for Drawing Actions
+        map.on('draw.create', updateArea);
+        map.on('draw.update', updateArea);
+        map.on('draw.delete', updateArea);
+
+        function updateArea(e) {
+            const data = Draw.getAll();
+            if (data.features.length > 0) {
+                const coordinates = data.features[0].geometry.coordinates;
+                console.log('Polygon Coordinates:', JSON.stringify(coordinates));
+                alert('Polygon coordinates logged to the console.');
+            } else {
+                console.log('No polygon found.');
+            }
+        }
+    </script>
+</body>
+</html>
