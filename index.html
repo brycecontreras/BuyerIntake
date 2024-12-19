@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buyer Intake Form</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=drawing"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSrWQuk3TGfkYvOlgQHJe0rEru1PNKa80&libraries=drawing"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,7 +44,7 @@
             padding: 10px;
             background: #f8f9fa;
             border: 1px solid #ddd;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         #map {
             width: 100%;
@@ -62,23 +62,21 @@
             font-size: 14px;
             cursor: pointer;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <form id="buyerForm">
         <h2>Buyer Intake Form</h2>
 
-        <!-- Instructions Section -->
-        <div id="instructions">
-            <p><b>Instructions:</b> Use the polygon tool to draw your area of interest on the map. Click "Delete Polygon" if you need to start over. Fill out all fields before submitting.</p>
-        </div>
-
         <!-- Name -->
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
+        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required>
+        <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
 
         <!-- Phone -->
         <label for="phoneNumber">Phone Number:</label>
@@ -86,73 +84,72 @@
 
         <!-- Email -->
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-	<!-- Divider -->
-        <div class="divider"></div>
+        <input type="email" id="email" name="email" placeholder="example@email.com" required>
 
         <!-- What Type of Buyer Are You? -->
-        <label for="buyerType">What Type of Buyer Are You?</label>
-        <select id="buyerType" name="buyerType" multiple>
-            <option value="Wholesaler">Wholesaler</option>
-            <option value="Buy-and-Hold">Buy-and-Hold</option>
-            <option value="Flipper">Flipper</option>
-        </select>
+        <label>What Type of Buyer Are You?</label>
+        <div>
+            <input type="checkbox" id="wholesaler" name="buyerType" value="Wholesaler">
+            <label for="wholesaler">Wholesaler</label>
+            <input type="checkbox" id="buyAndHold" name="buyerType" value="Buy-and-Hold">
+            <label for="buyAndHold">Buy-and-Hold</label>
+            <input type="checkbox" id="flipper" name="buyerType" value="Flipper">
+            <label for="flipper">Flipper</label>
+        </div>
 
         <!-- How Do You Buy Deals? -->
-        <label for="buyDeals">How Do You Buy Deals?</label>
-        <select id="buyDeals" name="buyDeals" multiple>
-            <option value="Cash">Cash</option>
-            <option value="Private Money">Private Money</option>
-            <option value="Hard Money">Hard Money</option>
-            <option value="Traditional Financing">Traditional Financing</option>
-        </select>
+        <label>How Do You Buy Deals?</label>
+        <div>
+            <input type="checkbox" id="cash" name="buyDeals" value="Cash">
+            <label for="cash">Cash</label>
+            <input type="checkbox" id="privateMoney" name="buyDeals" value="Private Money">
+            <label for="privateMoney">Private Money</label>
+            <input type="checkbox" id="hardMoney" name="buyDeals" value="Hard Money">
+            <label for="hardMoney">Hard Money</label>
+            <input type="checkbox" id="traditional" name="buyDeals" value="Traditional Financing">
+            <label for="traditional">Traditional Financing</label>
+        </div>
 
-	<!-- Do You Have a Price Range? -->
+        <!-- Do You Have a Price Range? -->
         <label for="priceRange">Do You Have a Price Range?</label>
         <select id="priceRange" name="priceRange">
             <option value="No">No</option>
             <option value="Yes">Yes</option>
         </select>
 
- 	<label for="priceMin">Min Price (if applicable):</label>
-        <input type="number" id="priceMin" name="priceMin">
+        <div id="priceFields" class="hidden">
+            <label for="priceMin">Min Price:</label>
+            <input type="number" id="priceMin" name="priceMin" placeholder="Minimum">
 
-        <label for="priceMax">Max Price (if applicable):</label>
-        <input type="number" id="priceMax" name="priceMax">
-
-        <!-- How Quickly Can You Close? -->
-        <label for="closeSpeed">How Quickly Can You Close?</label>
-        <select id="closeSpeed" name="closeSpeed">
-            <option value="0-7 Days">0-7 Days</option>
-            <option value="7-14 Days">7-14 Days</option>
-            <option value="14-30 Days">14-30 Days</option>
-            <option value="30+ Days">30+ Days</option>
-        </select>
-
-	<!-- Divider -->
-   	<div class="divider"></div>
+            <label for="priceMax">Max Price:</label>
+            <input type="number" id="priceMax" name="priceMax" placeholder="Maximum">
+        </div>
 
         <!-- Preferred Property Type -->
-        <label for="propertyType">Preferred Property Type:</label>
-        <select id="propertyType" name="propertyType" multiple>
-            <option value="Single-Family">Single-Family</option>
-            <option value="Multi-Family">Multi-Family</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Land">Land</option>
-        </select>
+        <label>Preferred Property Type:</label>
+        <div>
+            <input type="checkbox" id="singleFamily" name="propertyType" value="Single-Family">
+            <label for="singleFamily">Single-Family</label>
+            <input type="checkbox" id="multiFamily" name="propertyType" value="Multi-Family">
+            <label for="multiFamily">Multi-Family</label>
+            <input type="checkbox" id="commercial" name="propertyType" value="Commercial">
+            <label for="commercial">Commercial</label>
+            <input type="checkbox" id="land" name="propertyType" value="Land">
+            <label for="land">Land</label>
+        </div>
 
         <!-- Property Condition -->
-        <label for="propertyCondition">Property Condition:</label>
-        <select id="propertyCondition" name="propertyCondition" multiple>
-            <option value="Light Rehab (Paint/Carpet)">Light Rehab (Paint/Carpet)</option>
-            <option value="Moderate Rehab">Moderate Rehab</option>
-            <option value="Full Gut">Full Gut</option>
-            <option value="Tear Down/Fire Damage">Tear Down/Fire Damage</option>
-        </select>
-
-	<!-- Divider -->
-        <div class="divider"></div>
+        <label>Property Condition:</label>
+        <div>
+            <input type="checkbox" id="lightRehab" name="propertyCondition" value="Light Rehab (Paint/Carpet)">
+            <label for="lightRehab">Light Rehab (Paint/Carpet)</label>
+            <input type="checkbox" id="moderateRehab" name="propertyCondition" value="Moderate Rehab">
+            <label for="moderateRehab">Moderate Rehab</label>
+            <input type="checkbox" id="fullGut" name="propertyCondition" value="Full Gut">
+            <label for="fullGut">Full Gut</label>
+            <input type="checkbox" id="tearDown" name="propertyCondition" value="Tear Down/Fire Damage">
+            <label for="tearDown">Tear Down/Fire Damage</label>
+        </div>
 
         <!-- Where Do You Invest? -->
         <label for="investmentAreas">Where Do You Invest?</label>
@@ -161,6 +158,8 @@
             <option value="Anywhere">Anywhere</option>
             <option value="Fresno">Fresno</option>
             <option value="Clovis">Clovis</option>
+            <option value="Madera">Madera</option>
+            <option value="Hanford">Hanford</option>
             <!-- Add other areas here -->
         </datalist>
 
@@ -170,8 +169,19 @@
         <datalist id="neighborhoodList">
             <option value="Van Ness Extension">Van Ness Extension</option>
             <option value="Woodward">Woodward</option>
-            <!-- Add other neighborhoods here -->
+            <option value="Fig Garden">Fig Garden</option>
+            <option value="Sierra Sky Park">Sierra Sky Park</option>
+            <option value="Herndon">Herndon</option>
+            <option value="Bullard">Bullard</option>
+            <option value="Fig Garden Loop">Fig Garden Loop</option>
+            <option value="Sunnyside">Sunnyside</option>
+            <!-- Add other neighborhoods -->
         </datalist>
+
+        <!-- Instructions -->
+        <div id="instructions">
+            <p><b>Instructions:</b> Use the polygon tool to draw your area of interest on the map. Click "Delete Polygon" if you need to start over.</p>
+        </div>
 
         <!-- Map -->
         <div id="map"></div>
@@ -186,7 +196,99 @@
     </form>
 
     <script>
-        // JavaScript is the same as previously provided
+        let map, drawingManager, selectedShape;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 36.7468, lng: -119.7726 }, // Fresno, CA
+                zoom: 12,
+            });
+
+            drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: null,
+                drawingControl: false,
+                polygonOptions: {
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.4,
+                    strokeWeight: 2,
+                    strokeColor: '#FF0000',
+                    clickable: true,
+                    editable: true,
+                    zIndex: 1,
+                },
+            });
+
+            drawingManager.setMap(map);
+
+            google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+                if (selectedShape) {
+                    selectedShape.setMap(null);
+                }
+                selectedShape = event.overlay;
+                const coordinates = selectedShape
+                    .getPath()
+                    .getArray()
+                    .map(coord => ({ lat: coord.lat(), lng: coord.lng() }));
+                console.log('Polygon Coordinates:', coordinates);
+            });
+        }
+
+        initMap();
+
+        document.getElementById('startDrawing').addEventListener('click', function () {
+            drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYGON);
+        });
+
+        document.getElementById('deletePolygon').addEventListener('click', function () {
+            if (selectedShape) {
+                selectedShape.setMap(null);
+                selectedShape = null;
+            } else {
+                alert('No polygon to delete!');
+            }
+        });
+
+        document.getElementById('priceRange').addEventListener('change', function () {
+            const priceFields = document.getElementById('priceFields');
+            priceFields.classList.toggle('hidden', this.value === 'No');
+        });
+
+        document.getElementById('buyerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                email: document.getElementById('email').value,
+                buyerType: Array.from(document.querySelectorAll('[name="buyerType"]:checked')).map(el => el.value),
+                buyDeals: Array.from(document.querySelectorAll('[name="buyDeals"]:checked')).map(el => el.value),
+                priceRange: document.getElementById('priceRange').value === 'Yes'
+                    ? {
+                        min: document.getElementById('priceMin').value,
+                        max: document.getElementById('priceMax').value
+                    }
+                    : null,
+                propertyType: Array.from(document.querySelectorAll('[name="propertyType"]:checked')).map(el => el.value),
+                propertyCondition: Array.from(document.querySelectorAll('[name="propertyCondition"]:checked')).map(el => el.value),
+                investmentAreas: document.getElementById('investmentAreas').value,
+                neighborhoods: document.getElementById('neighborhoods').value,
+                coordinates: selectedShape
+                    ? selectedShape.getPath().getArray().map(coord => ({ lat: coord.lat(), lng: coord.lng() }))
+                    : null
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                mode: 'no-cors',
+                body: JSON.stringify(formData),
+            })
+                .then(() => alert('Form submitted successfully!'))
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 </body>
 </html>
