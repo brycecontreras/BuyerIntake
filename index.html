@@ -218,6 +218,9 @@
             <option value="Lone Star">
         </datalist>
 
+        <label for="zipCodes">Zip Code(s):</label>
+        <input type="text" id="zipCodes" name="zipCodes" placeholder="Enter zip codes separated by commas">
+
         <div id="instructions">
             <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click 'Delete Polygon' to reset.</p>
         </div>
@@ -293,6 +296,7 @@
                 propertyCondition: getSelectedValues('propertyConditionGroup'),
                 investmentAreas: document.getElementById('investmentAreas').value,
                 neighborhoods: document.getElementById('neighborhoods').value,
+                zipCodes: document.getElementById('zipCodes').value,
                 polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray()) : null,
             };
 
