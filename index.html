@@ -20,29 +20,20 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        form input, form select, form button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        form h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
         }
-        form button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border: none;
+        form h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
         }
-        form button:hover {
-            background-color: #45a049;
-        }
-        form label {
+        label {
             font-weight: bold;
             margin-top: 10px;
-        }
-        .divider {
-            border-top: 1px solid #ddd;
-            margin: 20px 0;
         }
         .checkbox-group, .radio-group {
             display: flex;
@@ -50,15 +41,35 @@
             gap: 10px;
             margin-bottom: 20px;
         }
-        .checkbox-group label, .radio-group label {
+        .pill-group {
             display: flex;
-            align-items: center;
-            font-size: 16px;
-            cursor: pointer;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .checkbox-group input[type="checkbox"], .radio-group input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2);
+        .pill {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+        .pill.selected {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .divider {
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+        #instructions {
+            padding: 10px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
         }
         #map {
             width: 100%;
@@ -76,16 +87,12 @@
             font-size: 14px;
             cursor: pointer;
         }
-        #instructions {
-            padding: 10px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
     <form id="buyerForm">
+        <h1>Buyer Intake Form</h1>
+
         <h2>Section 1: Personal Information</h2>
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
@@ -101,20 +108,20 @@
 
         <div class="divider"></div>
 
-        <h2>Section 2: Buyer Preferences (Including Pricing Information)</h2>
+        <h2>Section 2: Buyer Preferences</h2>
         <label>What Type of Buyer Are You?</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" id="wholesaler" name="buyerType" value="Wholesaler"> Wholesaler</label>
-            <label><input type="checkbox" id="flipper" name="buyerType" value="Flipper"> Flipper</label>
-            <label><input type="checkbox" id="buyAndHold" name="buyerType" value="Buy and Hold (Rental)"> Buy and Hold (Rental)</label>
+        <div class="pill-group" id="buyerTypeGroup">
+            <div class="pill" data-value="Wholesaler">Wholesaler</div>
+            <div class="pill" data-value="Flipper">Flipper</div>
+            <div class="pill" data-value="Buy-and-Hold">Buy-and-Hold</div>
         </div>
 
         <label>How Do You Buy Deals?</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" id="cash" name="buyDeals" value="Cash"> Cash</label>
-            <label><input type="checkbox" id="privateMoney" name="buyDeals" value="Private Money"> Private Money</label>
-            <label><input type="checkbox" id="hardMoney" name="buyDeals" value="Hard Money"> Hard Money</label>
-            <label><input type="checkbox" id="traditional" name="buyDeals" value="Traditional Financing"> Traditional Financing</label>
+        <div class="pill-group" id="buyDealsGroup">
+            <div class="pill" data-value="Cash">Cash</div>
+            <div class="pill" data-value="Private Money">Private Money</div>
+            <div class="pill" data-value="Hard Money">Hard Money</div>
+            <div class="pill" data-value="Traditional Financing">Traditional Financing</div>
         </div>
 
         <label>Do You Have a Price Range?</label>
@@ -133,207 +140,183 @@
 
         <div class="divider"></div>
 
-        <h2>Section 3: Property Preferences</h2>
-        <label>Preferred Property Type:</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" id="singleFamily" name="propertyType" value="Single Family Residential"> Single Family Residential</label>
-            <label><input type="checkbox" id="multiFamily" name="propertyType" value="Multi-Family"> Multi-Family</label>
-            <label><input type="checkbox" id="vacantLand" name="propertyType" value="Vacant Land"> Vacant Land</label>
-            <label><input type="checkbox" id="commercial" name="propertyType" value="Commercial"> Commercial</label>
+        <h2>Section 3: Location Information</h2>
+        <label>Where Do You Invest?</label>
+        <input type="text" id="investmentAreas" placeholder="Start typing an area">
+
+        <label>Fresno/Clovis Neighborhoods</label>
+        <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
+        <datalist id="neighborhoodOptions">
+            <option value="Van Ness Extension">
+            <option value="Woodward">
+            <option value="Fig Garden">
+            <option value="Sierra Sky Park">
+            <option value="Herndon">
+            <option value="Bullard">
+            <option value="Fig Garden Loop">
+            <option value="Sunnyside">
+            <option value="Cecile">
+            <option value="West Fresno">
+            <option value="Hoover">
+            <option value="McLane">
+            <option value="Maroa">
+            <option value="Highway City">
+            <option value="Tower District">
+            <option value="Roeding Park">
+            <option value="Roosevelt">
+            <option value="Calwa">
+            <option value="Lowell">
+            <option value="Edison">
+            <option value="Pinedale">
+            <option value="Huntington">
+            <option value="Jefferson">
+            <option value="Downtown Fresno">
+            <option value="Tarpey">
+            <option value="North Growth Area">
+            <option value="Harlan Ranch">
+            <option value="Deauville East">
+            <option value="Wawona Ranch Estates">
+            <option value="Quail Lake">
+            <option value="Copper River Ranch">
+            <option value="Woodward Lake">
+            <option value="Muscatel">
+            <option value="Hammond">
+            <option value="Las Palmas">
+            <option value="Old Fig Garden">
+            <option value="Biola Junction">
+            <option value="Cincotta">
+            <option value="Goldleaf">
+            <option value="Pratton">
+            <option value="West Park">
+            <option value="Brookhaven">
+            <option value="Malaga">
+            <option value="Locans">
+            <option value="Burness">
+            <option value="Cameo">
+            <option value="Loma Vista">
+            <option value="Glorietta">
+            <option value="Mattei">
+            <option value="Lone Star">
+        </datalist>
+
+        <div id="instructions">
+            <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click 'Delete Polygon' to reset.</p>
+        </div>
+        <div id="map"></div>
+        <div class="map-buttons">
+            <button type="button" id="startDrawing">Start Drawing</button>
+            <button type="button" id="deletePolygon">Delete Polygon</button>
         </div>
 
-        <label>Property Condition:</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" id="lightRehab" name="propertyCondition" value="Light Rehab (Paint/Carpet)"> Light Rehab (Paint/Carpet)</label>
-            <label><input type="checkbox" id="moderateRehab" name="propertyCondition" value="Moderate Rehab"> Moderate Rehab</label>
-            <label><input type="checkbox" id="fullGut" name="propertyCondition" value="Full Gut"> Full Gut</label>
-            <label><input type="checkbox" id="tearDown" name="propertyCondition" value="Tear Down/Fire Damage"> Tear Down/Fire Damage</label>
-        </div>
+        <button type="submit">Submit</button>
+    </form>
 
-        <div class="divider"></div>
+    <script>
+        let selectedShape;
 
-<h2>Section 4: Location Information + Map Tool</h2>
-<label>Where Do You Invest?</label>
-<select id="investmentAreas" name="investmentAreas" multiple>
-    <option value="Anywhere">Anywhere</option>
-    <option value="Fresno">Fresno</option>
-    <option value="Clovis">Clovis</option>
-    <option value="Madera">Madera</option>
-    <option value="Sanger">Sanger</option>
-    <option value="Hanford">Hanford</option>
-    <option value="Orange Cove">Orange Cove</option>
-    <option value="San Joaquin">San Joaquin</option>
-    <option value="Raisin City">Raisin City</option>
-    <option value="Kerman">Kerman</option>
-    <option value="Fowler">Fowler</option>
-    <option value="Parlier">Parlier</option>
-    <option value="Reedley">Reedley</option>
-    <option value="Kingsburg">Kingsburg</option>
-    <option value="Caruthers">Caruthers</option>
-    <option value="Riverdale">Riverdale</option>
-    <option value="Prather">Prather</option>
-    <option value="Auberry">Auberry</option>
-    <option value="Shaver Lake">Shaver Lake</option>
-    <option value="Huntington Lake">Huntington Lake</option>
-    <option value="Dinuba">Dinuba</option>
-    <option value="Selma">Selma</option>
-    <option value="Mendota">Mendota</option>
-    <option value="Firebaugh">Firebaugh</option>
-    <option value="Chowchilla">Chowchilla</option>
-    <option value="Dunlap">Dunlap</option>
-    <option value="Del Rey">Del Rey</option>
-    <option value="Oakhurst">Oakhurst</option>
-    <option value="Visalia">Visalia</option>
-    <option value="Lemoore">Lemoore</option>
-    <option value="Laton">Laton</option>
-    <option value="Easton">Easton</option>
-    <option value="Biola">Biola</option>
-    <option value="Millerton">Millerton</option>
-</select>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 36.7468, lng: -119.7726 },
+                zoom: 10,
+            });
 
-<label>Fresno/Clovis Neighborhoods</label>
-<select id="neighborhoods" name="neighborhoods" multiple>
-    <option value="Van Ness Extension">Van Ness Extension</option>
-    <option value="Woodward">Woodward</option>
-    <option value="Fig Garden">Fig Garden</option>
-    <option value="Sierra Sky Park">Sierra Sky Park</option>
-    <option value="Herndon">Herndon</option>
-    <option value="Bullard">Bullard</option>
-    <option value="Fig Garden Loop">Fig Garden Loop</option>
-    <option value="Sunnyside">Sunnyside</option>
-    <option value="Cecile">Cecile</option>
-    <option value="West Fresno">West Fresno</option>
-    <option value="Hoover">Hoover</option>
-    <option value="McLane">McLane</option>
-    <option value="Maroa">Maroa</option>
-    <option value="Highway City">Highway City</option>
-    <option value="Tower District">Tower District</option>
-    <option value="Roeding Park">Roeding Park</option>
-    <option value="Roosevelt">Roosevelt</option>
-    <option value="Calwa">Calwa</option>
-    <option value="Lowell">Lowell</option>
-    <option value="Edison">Edison</option>
-    <option value="Pinedale">Pinedale</option>
-    <option value="Huntington">Huntington</option>
-    <option value="Jefferson Downtown Fresno">Jefferson Downtown Fresno</option>
-    <option value="Tarpey">Tarpey</option>
-    <option value="North Growth Area">North Growth Area</option>
-    <option value="Harlan Ranch">Harlan Ranch</option>
-    <option value="Deauville East">Deauville East</option>
-    <option value="Wawona Ranch Estates">Wawona Ranch Estates</option>
-    <option value="Quail Lake">Quail Lake</option>
-    <option value="Copper River Ranch">Copper River Ranch</option>
-    <option value="Woodward Lake">Woodward Lake</option>
-    <option value="Muscatel">Muscatel</option>
-    <option value="Hammond">Hammond</option>
-    <option value="Las Palmas">Las Palmas</option>
-    <option value="Old Fig Garden">Old Fig Garden</option>
-    <option value="Biola Junction">Biola Junction</option>
-    <option value="Cincotta">Cincotta</option>
-    <option value="Goldleaf">Goldleaf</option>
-    <option value="Pratton">Pratton</option>
-    <option value="West Park">West Park</option>
-    <option value="Brookhaven">Brookhaven</option>
-    <option value="Malaga">Malaga</option>
-    <option value="Locans">Locans</option>
-    <option value="Burness">Burness</option>
-    <option value="Cameo">Cameo</option>
-    <option value="Loma Vista">Loma Vista</option>
-    <option value="Glorietta">Glorietta</option>
-    <option value="Mattei">Mattei</option>
-    <option value="Lone Star">Lone Star</option>
-</select>
+            const drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [google.maps.drawing.OverlayType.POLYGON],
+                },
+                polygonOptions: {
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.5,
+                    strokeColor: '#FF0000',
+                    strokeWeight: 2,
+                    editable: true,
+                },
+            });
 
-<div id="instructions">
-    <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click "Delete Polygon" to reset.</p>
-</div>
-<div id="map"></div>
-<div class="map-buttons">
-    <button type="button" id="startDrawing">Start Drawing</button>
-    <button type="button" id="deletePolygon">Delete Polygon</button>
-</div>
+            drawingManager.setMap(map);
 
-<button type="submit">Submit</button>
+            google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+                if (selectedShape) {
+                    selectedShape.setMap(null);
+                }
+                selectedShape = event.overlay;
+            });
 
-<script>
-    let selectedShape;
+            document.getElementById('deletePolygon').addEventListener('click', () => {
+                if (selectedShape) {
+                    selectedShape.setMap(null);
+                    selectedShape = null;
+                }
+            });
+        }
 
-    function initMap() {
-        const map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 36.7468, lng: -119.7726 },
-            zoom: 10,
-        });
+        document.addEventListener('DOMContentLoaded', initMap);
 
-        const drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.POLYGON,
-            drawingControl: true,
-            drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes: [google.maps.drawing.OverlayType.POLYGON],
-            },
-            polygonOptions: {
-                fillColor: '#FF0000',
-                fillOpacity: 0.5,
-                strokeWeight: 2,
-                clickable: false,
-                editable: true,
-                zIndex: 1,
-            },
-        });
-        drawingManager.setMap(map);
-
-        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-            if (selectedShape) {
-                selectedShape.setMap(null);
-            }
-            selectedShape = event.overlay;
-        });
-
-        document.getElementById('deletePolygon').addEventListener('click', function () {
-            if (selectedShape) {
-                selectedShape.setMap(null);
-                selectedShape = null;
-            }
-        });
-
-        document.getElementById('buyerForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Form submission handling
+        const form = document.getElementById('buyerForm');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
 
             const formData = {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
                 email: document.getElementById('email').value,
-                buyerType: Array.from(document.querySelectorAll('[name="buyerType"]:checked')).map(el => el.value),
-                buyDeals: Array.from(document.querySelectorAll('[name="buyDeals"]:checked')).map(el => el.value),
-                priceRange: document.getElementById('priceRangeYes').checked
-                    ? {
-                        min: document.getElementById('priceMin').value,
-                        max: document.getElementById('priceMax').value
-                    }
-                    : null,
-                propertyType: Array.from(document.querySelectorAll('[name="propertyType"]:checked')).map(el => el.value),
-                propertyCondition: Array.from(document.querySelectorAll('[name="propertyCondition"]:checked')).map(el => el.value),
+                buyerType: getSelectedValues('buyerTypeGroup'),
+                buyDeals: getSelectedValues('buyDealsGroup'),
+                priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
+                priceMin: document.getElementById('priceMin').value,
+                priceMax: document.getElementById('priceMax').value,
+                propertyType: getSelectedValues('propertyTypeGroup'),
+                propertyCondition: getSelectedValues('propertyConditionGroup'),
                 investmentAreas: document.getElementById('investmentAreas').value,
                 neighborhoods: document.getElementById('neighborhoods').value,
-                coordinates: selectedShape
-                    ? selectedShape.getPath().getArray().map(coord => ({ lat: coord.lat(), lng: coord.lng() }))
-                    : null,
+                polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray()) : null,
             };
 
+            // Send to Google Apps Script
             fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                mode: 'no-cors',
                 body: JSON.stringify(formData),
             })
-                .then(() => alert('Form submitted successfully!'))
-                .catch(error => console.error('Error:', error));
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok');
+                })
+                .then((data) => {
+                    alert('Form submitted successfully!');
+                    form.reset();
+                    if (selectedShape) {
+                        selectedShape.setMap(null);
+                        selectedShape = null;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error submitting form:', error);
+                    alert('An error occurred while submitting the form. Please try again.');
+                });
         });
-    }
 
-    window.onload = initMap;
-</script>
+        // Helper function to get selected pill values
+        function getSelectedValues(groupId) {
+            return Array.from(document.querySelectorAll(`#${groupId} .pill.selected`))
+                .map((pill) => pill.dataset.value);
+        }
 
+        // Handle pill selection
+        document.querySelectorAll('.pill').forEach((pill) => {
+            pill.addEventListener('click', () => {
+                pill.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+</html>
