@@ -3,63 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Map with Drawing Tool</title>
+    <title>Buyer Intake Form with Interactive Map</title>
     <!-- Mapbox GL CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-    <!-- Mapbox Draw CSS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" rel="stylesheet">
     <style>
-        body { 
-            margin: 0; 
-            padding: 0; 
+        body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
         }
-        #map { 
-            width: 100vw; 
-            height: 90vh; 
+        #container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        #info {
-            padding: 10px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #ddd;
+        h1 {
             text-align: center;
         }
-        #info h1 {
-            margin: 5px 0;
-            font-size: 18px;
+        #map {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
         }
-        #info p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #666;
+        .form-group {
+            margin-bottom: 15px;
         }
-        .mapboxgl-ctrl-group > button {
-            width: 50px;
-            height: 50px;
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-        @media (max-width: 768px) {
-            .mapboxgl-ctrl-group > button {
-                width: 40px;
-                height: 40px;
-            }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <!-- Information Section -->
-    <div id="info">
-        <h1>Interactive Map</h1>
-        <p>Use the polygon tool to draw your area of interest. Click the trash icon to delete shapes.</p>
+    <div id="container">
+        <h1>Buyer Intake Form</h1>
+
+        <!-- Interactive Map -->
+        <div id="map"></div>
+
+        <!-- Form -->
+        <form id="buyerForm">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <!-- Hidden field for coordinates -->
+            <input type="hidden" id="coordinates" name="coordinates">
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
-    <!-- Map Container -->
-    <div id="map"></div>
 
     <!-- Mapbox JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-    <!-- Mapbox Draw JS -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
     <script>
-        // Mapbox Access Token
         mapboxgl.accessToken = 'pk.eyJ1IjoiYnJ5Y2Vjb250cmVyYXMiLCJhIjoiY200dDF4aGNpMDZsYjJxcHE4b3JqZzVvNyJ9.Nl2Pyr0coOIUfiCSTVWQPg';
 
         // Initialize Map
@@ -67,66 +97,67 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [-119.7726, 36.7468], // Fresno, California
-            zoom: 12
+            zoom: 12,
         });
 
-        // Initialize Drawing Tools
+        // Add Navigation Controls
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav);
+
+        // Add Drawing Tools
         const Draw = new MapboxDraw({
             displayControlsDefault: false,
             controls: {
                 polygon: true,
                 trash: true
             },
-            styles: [
-                {
-                    'id': 'gl-draw-polygon-fill',
-                    'type': 'fill',
-                    'paint': {
-                        'fill-color': '#4CAF50', // Green fill color
-                        'fill-opacity': 0.4      // Semi-transparent fill
-                    }
-                },
-                {
-                    'id': 'gl-draw-polygon-stroke',
-                    'type': 'line',
-                    'paint': {
-                        'line-color': '#FF0000', // Solid red line color
-                        'line-width': 4          // Thicker border
-                    }
-                },
-                {
-                    'id': 'gl-draw-polygon-midpoint',
-                    'type': 'circle',
-                    'paint': {
-                        'circle-radius': 6,
-                        'circle-color': '#000000' // Black midpoint color
-                    }
-                }
-            ]
         });
-
-        // Add Drawing Controls to Map
         map.addControl(Draw);
 
-        // Mobile-Friendly Zoom and Rotate
-        map.scrollZoom.disable();
-        map.addControl(new mapboxgl.NavigationControl({ showCompass: true, visualizePitch: true }));
+        // Handle Polygon Draw and Update Events
+        map.on('draw.create', updateCoordinates);
+        map.on('draw.update', updateCoordinates);
 
-        // Event Listeners for Drawing Actions
-        map.on('draw.create', updateArea);
-        map.on('draw.update', updateArea);
-        map.on('draw.delete', updateArea);
-
-        function updateArea(e) {
+        function updateCoordinates() {
             const data = Draw.getAll();
             if (data.features.length > 0) {
-                const coordinates = data.features[0].geometry.coordinates;
-                console.log('Polygon Coordinates:', JSON.stringify(coordinates));
-                alert('Polygon coordinates logged to the console.');
-            } else {
-                console.log('No polygon found.');
+                const coordinates = JSON.stringify(data.features[0].geometry.coordinates);
+                document.getElementById('coordinates').value = coordinates;
             }
         }
+
+        // Handle Form Submission
+        document.getElementById('buyerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                coordinates: document.getElementById('coordinates').value,
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Form submitted successfully!');
+                    e.target.reset();
+                } else {
+                    alert('There was an error.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            });
+        });
     </script>
 </body>
 </html>
