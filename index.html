@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buyer Intake Form with Interactive Map</title>
-    <!-- Mapbox GL CSS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" rel="stylesheet">
+    <title>Buyer Intake Form with Map</title>
+    <!-- Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSrWQuk3TGfkYvOlgQHJe0rEru1PNKa80&libraries=drawing"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,117 +13,94 @@
             padding: 0;
             background-color: #f4f4f9;
         }
-        #container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
         #map {
             width: 100%;
             height: 400px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input, button {
+        form input, form button {
             width: 100%;
             padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-        button {
+        form button {
             background-color: #4CAF50;
             color: white;
+            font-size: 16px;
             border: none;
-            cursor: pointer;
         }
-        button:hover {
+        form button:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <h1>Buyer Intake Form</h1>
+    <h1 style="text-align: center;">Buyer Intake Form</h1>
 
-        <!-- Interactive Map -->
-        <div id="map"></div>
+    <!-- Google Map -->
+    <div id="map"></div>
 
-        <!-- Form -->
-        <form id="buyerForm">
-            <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" required>
-            </div>
-            <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+    <!-- Form -->
+    <form id="buyerForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
 
-            <!-- Hidden field for coordinates -->
-            <input type="hidden" id="coordinates" name="coordinates">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
 
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
 
-    <!-- Mapbox JS -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+        <!-- Hidden field for polygon coordinates -->
+        <input type="hidden" id="coordinates" name="coordinates">
+
+        <button type="submit">Submit</button>
+    </form>
+
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYnJ5Y2Vjb250cmVyYXMiLCJhIjoiY200dDF4aGNpMDZsYjJxcHE4b3JqZzVvNyJ9.Nl2Pyr0coOIUfiCSTVWQPg';
+        let map;
+        let drawingManager;
 
-        // Initialize Map
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-119.7726, 36.7468], // Fresno, California
-            zoom: 12,
-        });
+        // Initialize Google Map with Drawing Tools
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 36.7468, lng: -119.7726 }, // Fresno, CA
+                zoom: 12,
+            });
 
-        // Add Navigation Controls
-        const nav = new mapboxgl.NavigationControl();
-        map.addControl(nav);
+            drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: ['polygon'],
+                },
+            });
 
-        // Add Drawing Tools
-        const Draw = new MapboxDraw({
-            displayControlsDefault: false,
-            controls: {
-                polygon: true,
-                trash: true
-            },
-        });
-        map.addControl(Draw);
+            drawingManager.setMap(map);
 
-        // Handle Polygon Draw and Update Events
-        map.on('draw.create', updateCoordinates);
-        map.on('draw.update', updateCoordinates);
-
-        function updateCoordinates() {
-            const data = Draw.getAll();
-            if (data.features.length > 0) {
-                const coordinates = JSON.stringify(data.features[0].geometry.coordinates);
-                document.getElementById('coordinates').value = coordinates;
-            }
+            google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+                if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+                    const coordinates = event.overlay
+                        .getPath()
+                        .getArray()
+                        .map(coord => ({ lat: coord.lat(), lng: coord.lng() }));
+                    document.getElementById('coordinates').value = JSON.stringify(coordinates);
+                }
+            });
         }
+
+        initMap();
 
         // Handle Form Submission
         document.getElementById('buyerForm').addEventListener('submit', function (e) {
@@ -137,25 +113,21 @@
                 coordinates: document.getElementById('coordinates').value,
             };
 
-            fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
+            fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
+                mode: 'no-cors', // Bypass CORS
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Form submitted successfully!');
-                    e.target.reset();
-                } else {
-                    alert('There was an error.');
-                }
+            .then(() => {
+                alert('Form submitted successfully!');
+                document.getElementById('buyerForm').reset();
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred.');
+                alert('An error occurred. Check the console for details.');
             });
         });
     </script>
