@@ -94,29 +94,29 @@
         <h1>Buyer Intake Form</h1>
 
         <h2>Section 1: Personal Information</h2>
-        <label for="firstName">First Name:</label>
+        <label for="firstName">First Name: <span style="color: red;">*</span></label>
         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
 
-        <label for="lastName">Last Name:</label>
+        <label for="lastName">Last Name: <span style="color: red;">*</span></label>
         <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
 
-        <label for="phoneNumber">Phone Number:</label>
+        <label for="phoneNumber">Phone Number: <span style="color: red;">*</span></label>
         <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="123-456-7890" required>
 
-        <label for="email">Email:</label>
+        <label for="email">Email: <span style="color: red;">*</span></label>
         <input type="email" id="email" name="email" placeholder="example@email.com" required>
 
         <div class="divider"></div>
 
         <h2>Section 2: Buyer Preferences</h2>
-        <label>What Type of Buyer Are You?</label>
+        <label>What Type of Buyer Are You? <span style="color: red;">*</span></label>
         <div class="pill-group" id="buyerTypeGroup">
             <div class="pill" data-value="Wholesaler">Wholesaler</div>
             <div class="pill" data-value="Flipper">Flipper</div>
             <div class="pill" data-value="Buy-and-Hold">Buy-and-Hold</div>
         </div>
 
-        <label>How Do You Buy Deals?</label>
+        <label>How Do You Buy Deals? <span style="color: red;">*</span></label>
         <div class="pill-group" id="buyDealsGroup">
             <div class="pill" data-value="Cash">Cash</div>
             <div class="pill" data-value="Private Money">Private Money</div>
@@ -124,7 +124,7 @@
             <div class="pill" data-value="Traditional Financing">Traditional Financing</div>
         </div>
 
-        <label>Do You Have a Price Range?</label>
+        <label>Do You Have a Price Range? <span style="color: red;">*</span></label>
         <div class="radio-group">
             <label><input type="radio" id="priceRangeYes" name="priceRange" value="Yes"> Yes</label>
             <label><input type="radio" id="priceRangeNo" name="priceRange" value="No"> No</label>
@@ -140,11 +140,30 @@
 
         <div class="divider"></div>
 
-        <h2>Section 3: Location Information</h2>
-        <label>Where Do You Invest?</label>
+        <h2>Section 3: Property Preferences</h2>
+        <label>Preferred Property Type: <span style="color: red;">*</span></label>
+        <div class="pill-group" id="propertyTypeGroup">
+            <div class="pill" data-value="Single Family">Single Family</div>
+            <div class="pill" data-value="Multi-Family">Multi-Family</div>
+            <div class="pill" data-value="Commercial">Commercial</div>
+            <div class="pill" data-value="Vacant Land">Vacant Land</div>
+        </div>
+
+        <label>Property Condition: <span style="color: red;">*</span></label>
+        <div class="pill-group" id="propertyConditionGroup">
+            <div class="pill" data-value="Light Rehab">Light Rehab</div>
+            <div class="pill" data-value="Moderate Rehab">Moderate Rehab</div>
+            <div class="pill" data-value="Full Gut">Full Gut</div>
+            <div class="pill" data-value="Tear Down">Tear Down</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>Section 4: Location Information</h2>
+        <label>Where Do You Invest? <span style="color: red;">*</span></label>
         <input type="text" id="investmentAreas" placeholder="Start typing an area">
 
-        <label>Fresno/Clovis Neighborhoods</label>
+        <label>Fresno/Clovis Neighborhoods <span style="color: red;">*</span></label>
         <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
         <datalist id="neighborhoodOptions">
             <option value="Van Ness Extension">
