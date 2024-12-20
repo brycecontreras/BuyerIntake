@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buyer Intake Form</title>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSrWQuk3TGfkYvOlgQHJe0rEru1PNKa80&libraries=drawing"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSrWQuk3TGfkYvOlgQHJe0rEru1PNKa80&libraries=drawing&callback=initMap"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -337,32 +337,31 @@
             event.preventDefault();
 
             const formData = {
-    		firstName: document.getElementById('firstName').value,
-   		lastName: document.getElementById('lastName').value,
-   		phoneNumber: document.getElementById('phoneNumber').value,
-    		email: document.getElementById('email').value,
-    		buyerType: getSelectedValues('buyerTypeGroup').join(', '),
-    		propertyType: getSelectedValues('propertyTypeGroup').join(', '),
-    		buyDeals: getSelectedValues('buyDealsGroup').join(', '),
-    		closingSpeed: getSelectedValues('closingSpeedGroup')[0] || '',
-    		propertyCondition: getSelectedValues('propertyConditionGroup').join(', '),
-    		priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
-    		priceMin: document.getElementById('priceMin').value,
-    		priceMax: document.getElementById('priceMax').value,
-    		investmentAreas: document.getElementById('investmentAreas').value,
-    		neighborhoods: document.getElementById('neighborhoods').value,
-    		zipCodes: document.getElementById('zipCodes').value,
-    		polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray().map((latLng) => ({
-        	    lat: latLng.lat(),
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                email: document.getElementById('email').value,
+                buyerType: getSelectedValues('buyerTypeGroup').join(', '),
+                propertyType: getSelectedValues('propertyTypeGroup').join(', '),
+                buyDeals: getSelectedValues('buyDealsGroup').join(', '),
+                closingSpeed: getSelectedValues('closingSpeedGroup')[0] || '',
+                propertyCondition: getSelectedValues('propertyConditionGroup').join(', '),
+                priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
+                priceMin: document.getElementById('priceMin').value,
+                priceMax: document.getElementById('priceMax').value,
+                investmentAreas: document.getElementById('investmentAreas').value,
+                neighborhoods: document.getElementById('neighborhoods').value,
+                zipCodes: document.getElementById('zipCodes').value,
+                polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray().map((latLng) => ({
+                    lat: latLng.lat(),
                     lng: latLng.lng()
-    		}))) : null,
-	};
-
+                }))) : null,
+            };
 
             // Send to Google Apps Script
             fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
-                mode: 'no-cors', // Added to bypass CORS restrictions
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
