@@ -89,6 +89,9 @@
             font-size: 14px;
             cursor: pointer;
         }
+        .required {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -96,16 +99,16 @@
         <h1>Buyer Intake Form</h1>
 
         <h2>Section 1: Personal Information</h2>
-        <label for="firstName">First Name: <span style="color: red;">*</span></label>
+        <label for="firstName">First Name: <span class="required">*</span></label>
         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
 
-        <label for="lastName">Last Name: <span style="color: red;">*</span></label>
+        <label for="lastName">Last Name: <span class="required">*</span></label>
         <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
 
-        <label for="phoneNumber">Phone Number: <span style="color: red;">*</span></label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="123-456-7890" required>
+        <label for="phoneNumber">Phone Number: <span class="required">*</span></label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="123-456-7890" pattern="\d{3}-\d{3}-\d{4}" title="Phone number must be in the format: 123-456-7890" required>
 
-        <label for="email">Email: <span style="color: red;">*</span></label>
+        <label for="email">Email: <span class="required">*</span></label>
         <input type="email" id="email" name="email" placeholder="example@email.com" required>
 
         <div class="divider"></div>
@@ -132,7 +135,7 @@
             <label><input type="radio" id="priceRangeNo" name="priceRange" value="No"> No</label>
         </div>
 
-        <div id="priceFields" style="display: none;">
+        <div id="priceFields">
             <label for="priceMin">Min Price:</label>
             <input type="number" id="priceMin" name="priceMin" placeholder="Minimum">
 
@@ -163,7 +166,43 @@
 
         <h2>Section 4: Location Information</h2>
         <label>Where Do You Invest?</label>
-        <input type="text" id="investmentAreas" placeholder="Start typing an area">
+        <input type="text" id="investmentAreas" placeholder="Start typing an area" list="areaOptions">
+        <datalist id="areaOptions">
+            <option value="Anywhere">
+            <option value="Fresno">
+            <option value="Clovis">
+            <option value="Madera">
+            <option value="Sanger">
+            <option value="Hanford">
+            <option value="Orange Cove">
+            <option value="San Joaquin">
+            <option value="Raisin City">
+            <option value="Kerman">
+            <option value="Fowler">
+            <option value="Parlier">
+            <option value="Reedley">
+            <option value="Kingsburg">
+            <option value="Caruthers">
+            <option value="Riverdale">
+            <option value="Prather">
+            <option value="Auberry">
+            <option value="Shaver Lake">
+            <option value="Huntington Lake">
+            <option value="Dinuba">
+            <option value="Selma">
+            <option value="Mendota">
+            <option value="Firebaugh">
+            <option value="Chowchilla">
+            <option value="Dunlap">
+            <option value="Del Rey">
+            <option value="Oakhurst">
+            <option value="Visalia">
+            <option value="Lemoore">
+            <option value="Laton">
+            <option value="Easton">
+            <option value="Biola">
+            <option value="Millerton">
+        </datalist>
 
         <label>Fresno/Clovis Neighborhoods</label>
         <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
@@ -273,7 +312,6 @@
                 if (selectedShape) {
                     selectedShape.setMap(null);
                     selectedShape = null;
-                }
             });
         }
 
@@ -299,13 +337,15 @@
                 investmentAreas: document.getElementById('investmentAreas').value,
                 neighborhoods: document.getElementById('neighborhoods').value,
                 zipCodes: document.getElementById('zipCodes').value,
-                polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray()) : null,
+                polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray().map((latLng) => ({
+                    lat: latLng.lat(),
+                    lng: latLng.lng()
+                }))) : null,
             };
 
             // Send to Google Apps Script
             fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
-		mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -343,6 +383,22 @@
                 pill.classList.toggle('selected');
             });
         });
+
+        // Handle Price Range visibility
+        document.querySelectorAll('input[name="priceRange"]').forEach((radio) => {
+            radio.addEventListener('change', (event) => {
+                const priceFields = document.getElementById('priceFields');
+                if (event.target.value === 'Yes') {
+                    priceFields.style.display = 'block';
+                } else {
+                    priceFields.style.display = 'none';
+                }
+            });
+        });
+
+        // Ensure price fields are hidden initially
+        document.getElementById('priceFields').style.display = 'none';
     </script>
 </body>
 </html>
+
