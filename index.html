@@ -199,7 +199,7 @@
             <option value="Clovis">
             <option value="Madera">
             <option value="Sanger">
-            <        <option value="Hanford">
+            <option value="Hanford">
             <option value="Orange Cove">
             <option value="San Joaquin">
             <option value="Raisin City">
@@ -222,7 +222,6 @@
             <option value="Dunlap">
             <option value="Del Rey">
             <option value="Oakhurst">
-            <option value="Hanford">
             <option value="Visalia">
             <option value="Lemoore">
             <option value="Laton">
@@ -230,9 +229,6 @@
             <option value="Biola">
             <option value="Millerton">
         </datalist>
-
-        <label for="zipCodes">Zip Code(s):</label>
-        <input type="text" id="zipCodes" name="zipCodes" placeholder="Enter zip codes separated by commas">
 
         <label for="neighborhoods">Fresno/Clovis Neighborhoods:</label>
         <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
@@ -252,176 +248,176 @@
             <option value="Maroa">
             <option value="Highway City">
             <option value="Tower District">
-            <option value="Roeding Park">
+	    <option value="Roeding Park">
             <option value="Roosevelt">
-            <option value="Calwa">
-            <option value="Lowell">
-            <option value="Edison">
-            <option value="Pinedale">
-            <option value="Huntington">
-            <option value="Jefferson">
-            <option value="Downtown Fresno">
-            <option value="Tarpey">
-            <option value="North Growth Area">
-            <option value="Harlan Ranch">
-            <option value="Deauville East">
-            <option value="Wawona Ranch Estates">
-            <option value="Quail Lake">
-            <option value="Copper River Ranch">
-            <option value="Woodward Lake">
-            <option value="Muscatel">
-            <option value="Hammond">
-            <option value="Las Palmas">
-            <option value="Old Fig Garden">
-            <option value="Biola Junction">
-            <option value="Cincotta">
-            <option value="Goldleaf">
-            <option value="Pratton">
-            <option value="West Park">
-            <option value="Brookhaven">
-            <option value="Malaga">
-            <option value="Locans">
-            <option value="Burness">
-            <option value="Cameo">
-            <option value="Loma Vista">
-            <option value="Glorietta">
-            <option value="Mattei">
-            <option value="Lone Star">
-        </datalist>
+<option value="Calwa">
+<option value="Lowell">
+<option value="Edison">
+<option value="Pinedale">
+<option value="Huntington">
+<option value="Jefferson">
+<option value="Downtown Fresno">
+<option value="Tarpey">
+<option value="North Growth Area">
+<option value="Harlan Ranch">
+<option value="Deauville East">
+<option value="Wawona Ranch Estates">
+<option value="Quail Lake">
+<option value="Copper River Ranch">
+<option value="Woodward Lake">
+<option value="Muscatel">
+<option value="Hammond">
+<option value="Las Palmas">
+<option value="Old Fig Garden">
+<option value="Biola Junction">
+<option value="Cincotta">
+<option value="Goldleaf">
+<option value="Pratton">
+<option value="West Park">
+<option value="Brookhaven">
+<option value="Malaga">
+<option value="Locans">
+<option value="Burness">
+<option value="Cameo">
+<option value="Loma Vista">
+<option value="Glorietta">
+<option value="Mattei">
+<option value="Lone Star">
+</datalist>
 
-        <div id="instructions">
-            <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click 'Delete Polygon' to reset.</p>
-        </div>
-        <div id="map"></div>
-        <div class="map-buttons">
-            <button type="button" id="startDrawing">Start Drawing</button>
-            <button type="button" id="deletePolygon">Delete Polygon</button>
-        </div>
+<div id="instructions">
+    <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click 'Delete Polygon' to reset.</p>
+</div>
+<div id="map"></div>
+<div class="map-buttons">
+    <button type="button" id="startDrawing">Start Drawing</button>
+    <button type="button" id="deletePolygon">Delete Polygon</button>
+</div>
 
-        <button type="submit">Submit</button>
-    </form>
+<button type="submit">Submit</button>
+</form>
 
-    <script>
-        let selectedShape;
+<script>
+    let selectedShape;
 
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 36.7468, lng: -119.7726 },
-                zoom: 10,
-            });
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 36.7468, lng: -119.7726 },
+            zoom: 10,
+        });
 
-            const drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.POLYGON,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [google.maps.drawing.OverlayType.POLYGON],
-                },
-                polygonOptions: {
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.5,
-                    strokeColor: '#FF0000',
-                    strokeWeight: 2,
-                    editable: true,
-                },
-            });
+        const drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYGON,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: [google.maps.drawing.OverlayType.POLYGON],
+            },
+            polygonOptions: {
+                fillColor: '#FF0000',
+                fillOpacity: 0.5,
+                strokeColor: '#FF0000',
+                strokeWeight: 2,
+                editable: true,
+            },
+        });
 
-            drawingManager.setMap(map);
+        drawingManager.setMap(map);
 
-            google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-                if (selectedShape) {
-                    selectedShape.setMap(null);
-                }
-                selectedShape = event.overlay;
-            });
+        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+            if (selectedShape) {
+                selectedShape.setMap(null);
+            }
+            selectedShape = event.overlay;
+        });
 
-            document.getElementById('deletePolygon').addEventListener('click', () => {
+        document.getElementById('deletePolygon').addEventListener('click', () => {
+            if (selectedShape) {
+                selectedShape.setMap(null);
+                selectedShape = null;
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initMap);
+
+    // Form submission handling
+    const form = document.getElementById('buyerForm');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            email: document.getElementById('email').value,
+            buyerType: getSelectedValues('buyerTypeGroup').join(', '),
+            propertyType: getSelectedValues('propertyTypeGroup').join(', '),
+            buyDeals: getSelectedValues('buyDealsGroup').join(', '),
+            closingSpeed: getSelectedValues('closingSpeedGroup')[0] || '',
+            propertyCondition: getSelectedValues('propertyConditionGroup').join(', '),
+            priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
+            priceMin: document.getElementById('priceMin').value,
+            priceMax: document.getElementById('priceMax').value,
+            investmentAreas: document.getElementById('investmentAreas').value,
+            neighborhoods: document.getElementById('neighborhoods').value,
+            zipCodes: document.getElementById('zipCodes').value,
+            polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray().map((latLng) => ({
+                lat: latLng.lat(),
+                lng: latLng.lng()
+            }))) : null,
+        };
+
+        // Send to Google Apps Script
+        fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(() => {
+                alert('Form submitted successfully!');
+                form.reset();
                 if (selectedShape) {
                     selectedShape.setMap(null);
                     selectedShape = null;
                 }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', initMap);
-
-        // Form submission handling
-        const form = document.getElementById('buyerForm');
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const formData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                email: document.getElementById('email').value,
-                buyerType: getSelectedValues('buyerTypeGroup').join(', '),
-                propertyType: getSelectedValues('propertyTypeGroup').join(', '),
-                buyDeals: getSelectedValues('buyDealsGroup').join(', '),
-                closingSpeed: getSelectedValues('closingSpeedGroup')[0] || '',
-                propertyCondition: getSelectedValues('propertyConditionGroup').join(', '),
-                priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
-                priceMin: document.getElementById('priceMin').value,
-                priceMax: document.getElementById('priceMax').value,
-                investmentAreas: document.getElementById('investmentAreas').value,
-                neighborhoods: document.getElementById('neighborhoods').value,
-                zipCodes: document.getElementById('zipCodes').value,
-                polygonCoordinates: selectedShape ? JSON.stringify(selectedShape.getPath().getArray().map((latLng) => ({
-                    lat: latLng.lat(),
-                    lng: latLng.lng()
-                }))) : null,
-            };
-
-            // Send to Google Apps Script
-            fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
             })
-                .then(() => {
-                    alert('Form submitted successfully!');
-                    form.reset();
-                    if (selectedShape) {
-                        selectedShape.setMap(null);
-                        selectedShape = null;
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error submitting form:', error);
-                    alert('An error occurred while submitting the form. Please try again.');
-                });
-        });
-
-        // Helper function to get selected pill values
-        function getSelectedValues(groupId) {
-            return Array.from(document.querySelectorAll(`#${groupId} .pill.selected`))
-                .map((pill) => pill.dataset.value);
-        }
-
-        // Handle pill selection
-        document.querySelectorAll('.pill').forEach((pill) => {
-            pill.addEventListener('click', () => {
-                pill.classList.toggle('selected');
+            .catch((error) => {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while submitting the form. Please try again.');
             });
-        });
+    });
 
-        // Handle Price Range visibility
-        document.querySelectorAll('input[name="priceRange"]').forEach((radio) => {
-            radio.addEventListener('change', (event) => {
-                const priceFields = document.getElementById('priceFields');
-                if (event.target.value === 'Yes') {
-                    priceFields.style.display = 'block';
-                } else {
-                    priceFields.style.display = 'none';
-                }
-            });
-        });
+    // Helper function to get selected pill values
+    function getSelectedValues(groupId) {
+        return Array.from(document.querySelectorAll(`#${groupId} .pill.selected`))
+            .map((pill) => pill.dataset.value);
+    }
 
-        // Ensure price fields are hidden initially
-        document.getElementById('priceFields').style.display = 'none';
-    </script>
+    // Handle pill selection
+    document.querySelectorAll('.pill').forEach((pill) => {
+        pill.addEventListener('click', () => {
+            pill.classList.toggle('selected');
+        });
+    });
+
+    // Handle Price Range visibility
+    document.querySelectorAll('input[name="priceRange"]').forEach((radio) => {
+        radio.addEventListener('change', (event) => {
+            const priceFields = document.getElementById('priceFields');
+            if (event.target.value === 'Yes') {
+                priceFields.style.display = 'block';
+            } else {
+                priceFields.style.display = 'none';
+            }
+        });
+    });
+
+    // Ensure price fields are hidden initially
+    document.getElementById('priceFields').style.display = 'none';
+</script>
 </body>
 </html>
