@@ -35,13 +35,15 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .checkbox-group, .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
         }
-        .pill-group {
+        .radio-group, .pill-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -109,14 +111,14 @@
         <div class="divider"></div>
 
         <h2>Section 2: Buyer Preferences</h2>
-        <label>What Type of Buyer Are You? <span style="color: red;">*</span></label>
+        <label>What Type of Buyer Are You?</label>
         <div class="pill-group" id="buyerTypeGroup">
             <div class="pill" data-value="Wholesaler">Wholesaler</div>
             <div class="pill" data-value="Flipper">Flipper</div>
             <div class="pill" data-value="Buy-and-Hold">Buy-and-Hold</div>
         </div>
 
-        <label>How Do You Buy Deals? <span style="color: red;">*</span></label>
+        <label>How Do You Buy Deals?</label>
         <div class="pill-group" id="buyDealsGroup">
             <div class="pill" data-value="Cash">Cash</div>
             <div class="pill" data-value="Private Money">Private Money</div>
@@ -124,13 +126,13 @@
             <div class="pill" data-value="Traditional Financing">Traditional Financing</div>
         </div>
 
-        <label>Do You Have a Price Range? <span style="color: red;">*</span></label>
+        <label>Do You Have a Price Range?</label>
         <div class="radio-group">
             <label><input type="radio" id="priceRangeYes" name="priceRange" value="Yes"> Yes</label>
             <label><input type="radio" id="priceRangeNo" name="priceRange" value="No"> No</label>
         </div>
 
-        <div id="priceFields" class="hidden">
+        <div id="priceFields" style="display: none;">
             <label for="priceMin">Min Price:</label>
             <input type="number" id="priceMin" name="priceMin" placeholder="Minimum">
 
@@ -141,7 +143,7 @@
         <div class="divider"></div>
 
         <h2>Section 3: Property Preferences</h2>
-        <label>Preferred Property Type: <span style="color: red;">*</span></label>
+        <label>Preferred Property Type:</label>
         <div class="pill-group" id="propertyTypeGroup">
             <div class="pill" data-value="Single Family">Single Family</div>
             <div class="pill" data-value="Multi-Family">Multi-Family</div>
@@ -149,7 +151,7 @@
             <div class="pill" data-value="Vacant Land">Vacant Land</div>
         </div>
 
-        <label>Property Condition: <span style="color: red;">*</span></label>
+        <label>Property Condition:</label>
         <div class="pill-group" id="propertyConditionGroup">
             <div class="pill" data-value="Light Rehab">Light Rehab</div>
             <div class="pill" data-value="Moderate Rehab">Moderate Rehab</div>
@@ -160,10 +162,10 @@
         <div class="divider"></div>
 
         <h2>Section 4: Location Information</h2>
-        <label>Where Do You Invest? <span style="color: red;">*</span></label>
+        <label>Where Do You Invest?</label>
         <input type="text" id="investmentAreas" placeholder="Start typing an area">
 
-        <label>Fresno/Clovis Neighborhoods <span style="color: red;">*</span></label>
+        <label>Fresno/Clovis Neighborhoods</label>
         <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
         <datalist id="neighborhoodOptions">
             <option value="Van Ness Extension">
