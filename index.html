@@ -351,6 +351,7 @@
             // Send to Google Apps Script
             fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
+		mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
