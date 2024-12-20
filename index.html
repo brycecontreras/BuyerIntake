@@ -133,6 +133,14 @@
             <div class="pill" data-value="Traditional Financing">Traditional Financing</div>
         </div>
 
+        <label>How Quickly Can You Close?</label>
+        <div class="pill-group" id="closingSpeedGroup">
+            <div class="pill" data-value="0-7 Days">0–7 Days</div>
+            <div class="pill" data-value="7-14 Days">7–14 Days</div>
+            <div class="pill" data-value="14-30 Days">14–30 Days</div>
+            <div class="pill" data-value="30+ Days">30+ Days</div>
+        </div>
+
         <label>Do You Have a Price Range?</label>
         <div class="radio-group">
             <label><input type="radio" id="priceRangeYes" name="priceRange" value="Yes"> Yes</label>
@@ -200,6 +208,7 @@
             <option value="Dunlap">
             <option value="Del Rey">
             <option value="Oakhurst">
+            <option value="Hanford">
             <option value="Visalia">
             <option value="Lemoore">
             <option value="Laton">
@@ -208,7 +217,10 @@
             <option value="Millerton">
         </datalist>
 
-        <label>Fresno/Clovis Neighborhoods</label>
+        <label for="zipCodes">Zip Code(s):</label>
+        <input type="text" id="zipCodes" name="zipCodes" placeholder="Enter zip codes separated by commas">
+
+        <label for="neighborhoods">Fresno/Clovis Neighborhoods:</label>
         <input type="text" id="neighborhoods" placeholder="Start typing a neighborhood" list="neighborhoodOptions">
         <datalist id="neighborhoodOptions">
             <option value="Van Ness Extension">
@@ -262,9 +274,6 @@
             <option value="Mattei">
             <option value="Lone Star">
         </datalist>
-
-        <label for="zipCodes">Zip Code(s):</label>
-        <input type="text" id="zipCodes" name="zipCodes" placeholder="Enter zip codes separated by commas">
 
         <div id="instructions">
             <p><b>Instructions:</b> Use the polygon tool to draw your area of interest. Click 'Delete Polygon' to reset.</p>
@@ -334,6 +343,7 @@
                 email: document.getElementById('email').value,
                 buyerType: getSelectedValues('buyerTypeGroup'),
                 buyDeals: getSelectedValues('buyDealsGroup'),
+                closingSpeed: getSelectedValues('closingSpeedGroup')[0] || '',
                 priceRange: document.querySelector('input[name="priceRange"]:checked')?.value || 'No',
                 priceMin: document.getElementById('priceMin').value,
                 priceMax: document.getElementById('priceMax').value,
@@ -351,7 +361,6 @@
             // Send to Google Apps Script
             fetch('https://script.google.com/macros/s/AKfycbw70x3X4yz-z4M7mRa0vdiYxjVk5gm_K8f8mNP12gLVvZw0kzO7CJQ3eXxBlRcnccID/exec', {
                 method: 'POST',
-		mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
